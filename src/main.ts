@@ -1,62 +1,70 @@
-import 'module-alias/register';
-import 'reflect-metadata';
-import { ConfigService } from '@nestjs/config';
-import { NestFactory } from '@nestjs/core';
-import { NestExpressApplication } from '@nestjs/platform-express';
+import { Logger, VersioningType } from '@nestjs/common';
+import { NestFactory, Reflector } from '@nestjs/core';
+import { ClassSerializerInterceptor } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { Logger } from 'nestjs-pino';
-import { DataSource } from 'typeorm';
+import compression from 'compression';
+import helmet from 'helmet';
 import { AppModule } from './app.module';
-import { initializeDataSource } from '@database/data-source';
-import { SeedingService } from '@database/seeding/seeding.service';
-import { ResponseInterceptor } from '@shared/inteceptors/response.interceptor';
-import { Request, Response } from 'express';
-import { HttpExceptionFilter } from '@shared/helpers/http-exception-filter';
+import { env } from './config/env';
+import { readFileSync } from 'fs';
+import { resolve } from 'path';
+
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule, { bufferLogs: true });
-
-  const logger = app.get(Logger);
-
-  const dataSource = app.get(DataSource);
-
-  try {
-    await initializeDataSource();
-    console.log('Data Source has been initialized!');
-  } catch (err) {
-    console.error('Error during Data Source initialization', err);
-    process.exit(1);
-  }
-
-  const seedingService = app.get(SeedingService);
-  await seedingService.seedDatabase();
-
-  app.enable('trust proxy');
-  app.useLogger(logger);
-  app.enableCors();
-  app.setGlobalPrefix('api/v1', { exclude: ['/', 'health', 'api', 'api/v1', 'api/docs', 'probe'] });
-  app.useGlobalInterceptors(new ResponseInterceptor());
-  app.useGlobalFilters(new HttpExceptionFilter());
-
-  const options = new DocumentBuilder()
-    .setTitle('HNG Boilerplate')
-    .setDescription('API Doc from team Starlight')
-    .setVersion('1.0')
-    .addBearerAuth()
-    .build();
-
-  const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('api/docs', app, document);
-
-  app.use('api/docs-json', (req: Request, res: Response) => {
-    res.json(document);
+  const app = await NestFactory.create(AppModule, {
+    bufferLogs: true,
   });
 
-  const port = app.get<ConfigService>(ConfigService).get<number>('server.port');
-  await app.listen(port);
+  app.use(helmet());
+  app.use(compression());
+  app.enableCors({
+    origin: env.CORS_ORIGIN === '*' ? true : env.CORS_ORIGIN.split(','),
+    credentials: true,
+  });
+  app.enableVersioning({
+    type: VersioningType.URI,
+    prefix: 'v',
+    defaultVersion: '1',
+  });
+  app.setGlobalPrefix('api');
+  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
+  app.enableShutdownHooks();
 
-  logger.log({ message: 'server started 🚀', port, url: `http://localhost:${port}/api/v1` });
+  if (env.SWAGGER_ENABLED) {
+    const packageJson = JSON.parse(readFileSync(resolve(process.cwd(), 'package.json'), 'utf-8')) as {
+      version: string;
+    };
+    const config = new DocumentBuilder()
+      .setTitle('Energy IQ API')
+      .setDescription('AI-powered energy management platform API for Nigerian SMEs and African businesses')
+      .setVersion(packageJson.version)
+      .addServer(`http://localhost:${env.PORT}`, 'Local Development')
+      .addServer('https://api.energyiq.example.com', 'Production')
+      .addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT' }, 'JWT')
+      .build();
+    const document = SwaggerModule.createDocument(app, config);
+    SwaggerModule.setup('docs', app, document, {
+      swaggerOptions: {
+        persistAuthorization: true,
+        displayRequestDuration: true,
+        deepLinking: true,
+        filter: true,
+        tryItOutEnabled: false,
+      },
+    });
+  }
+
+  await app.listen(env.PORT, env.HOST);
+
+  const logger = new Logger('Bootstrap');
+  logger.log({
+    message: 'Energy IQ API is running on http://localhost:' + env.PORT,
+    port: env.PORT,
+    host: env.HOST,
+    environment: env.NODE_ENV,
+    timestamp: new Date().toISOString(),
+  });
+
+  if (env.SWAGGER_ENABLED) logger.log(`Swagger docs: http://localhost:${env.PORT}/docs`);
 }
-bootstrap().catch(err => {
-  console.error('Error during bootstrap', err);
-  process.exit(1);
-});
+
+void bootstrap();
