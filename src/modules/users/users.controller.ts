@@ -8,6 +8,7 @@ import {
   Param,
   ParseUUIDPipe,
   Patch,
+  Post,
   Query,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -16,6 +17,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersService } from './users.service';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import type { AuthenticatedUser } from '../../common/decorators/current-user.decorator';
+import { InverterConnectorDto } from '../inverters/dto/inverter-connector.dto';
 
 @ApiTags('Users')
 @ApiBearerAuth()
@@ -27,6 +29,15 @@ export class UsersController {
   @ApiOperation({ summary: 'List users (paginated)' })
   findAll(@Query() pagination: PaginationDto) {
     return this.usersService.findAll(pagination);
+  }
+
+  @Post('onboard')
+  @ApiOperation({ summary: 'Connect user inverter brand' })
+  connectInverter(
+    @Body() dto: InverterConnectorDto,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
+    return this.usersService.connectUserInverter(dto, user.sub);
   }
 
   @Get('onboard/status')

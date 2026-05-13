@@ -74,7 +74,7 @@
     "resend": "^6.12.3",
     "rxjs": "^7.8.2",
     "socket.io": "^4.8.3",
-    "typeorm": "^0.3.28",
+    "typeorm": "0.3.28",
     "typeorm-naming-strategies": "^4.1.0",
     "zod": "^4.3.6"
   },
@@ -119,6 +119,11 @@
       "prettier --write",
       "eslint --fix"
     ]
+  },
+  "pnpm": {
+    "overrides": {
+      "typeorm": "0.3.28"
+    }
   },
   "jest": {
     "moduleFileExtensions": [
