@@ -1,17 +1,11 @@
-name: EnergyIQ Backend PR Quality Gate
+name: CI Quality & Security Gate
 
 on:
   pull_request:
     branches:
       - dev
       - staging
-      - main
   workflow_dispatch:
-permissions:
- contents: read
-concurrency:
- group: frontend-ci-${{ github.ref }}
- cancel-in-progress: true
 
 jobs:
   quality-gate:
@@ -20,15 +14,15 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        uses: actions/checkout@v4
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@8912a9102ac27614460f54aedde9e1e7f9aec20d
+        uses: pnpm/action-setup@v4
         with:
           version: 10
 
       - name: Setup Node.js
-        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f
+        uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: pnpm
@@ -54,15 +48,15 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        uses: actions/checkout@v4
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@8912a9102ac27614460f54aedde9e1e7f9aec20d
+        uses: pnpm/action-setup@v4
         with:
           version: 10
 
       - name: Setup Node.js
-        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f
+        uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: pnpm

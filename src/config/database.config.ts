@@ -19,5 +19,5 @@ export const databaseConfig = registerAs(
     ssl: env.DATABASE_SSL ? { rejectUnauthorized: false } : false,
     namingStrategy: new SnakeNamingStrategy(),
     autoLoadEntities: true,
-  })
+  }),
 );

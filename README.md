@@ -47,53 +47,50 @@ If Swagger is enabled, open `http://localhost:3000/docs`. The public health chec
 
 The application validates configuration at startup and fails fast on missing or invalid values. Start from `.env.example` and adjust it for your environment.
 
-| Variable                                                                                | Purpose                                                            |
-| --------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
-| `NODE_ENV`                                                                              | Application mode                                                   |
-| `PORT`                                                                                  | HTTP port                                                          |
-| `HOST`                                                                                  | HTTP hostname (default: `localhost`)                               |
-| `DATABASE_HOST`, `DATABASE_PORT`, `DATABASE_USER`, `DATABASE_PASSWORD`, `DATABASE_NAME` | PostgreSQL connection settings                                     |
-| `DATABASE_SYNC`                                                                         | Keep `false` outside local experimentation; use migrations instead |
-| `DATABASE_SSL`                                                                          | Enable for managed PostgreSQL providers                            |
-| `DATABASE_LOGGING`                                                                      | Toggle TypeORM logging                                             |
-| `JWT_ACCESS_SECRET`                                                                     | Access token signing secret                                        |
-| `JWT_ACCESS_EXPIRES_IN`                                                                 | Access token lifetime                                              |
-| `JWT_REFRESH_SECRET`                                                                    | Refresh token signing secret                                       |
-| `JWT_REFRESH_EXPIRES_IN`                                                                | Refresh token lifetime                                             |
-| `CORS_ORIGIN`                                                                           | Comma-separated allowed origins or `*`                             |
-| `SWAGGER_ENABLED`                                                                       | Enable or disable Swagger                                          |
+| Variable | Purpose |
+|---|---|
+| `NODE_ENV` | Application mode |
+| `PORT` | HTTP port |
+| `HOST` | HTTP hostname (default: `localhost`) |
+| `DATABASE_HOST`, `DATABASE_PORT`, `DATABASE_USER`, `DATABASE_PASSWORD`, `DATABASE_NAME` | PostgreSQL connection settings |
+| `DATABASE_SYNC` | Keep `false` outside local experimentation; use migrations instead |
+| `DATABASE_SSL` | Enable for managed PostgreSQL providers |
+| `DATABASE_LOGGING` | Toggle TypeORM logging |
+| `JWT_ACCESS_SECRET` | Access token signing secret |
+| `JWT_ACCESS_EXPIRES_IN` | Access token lifetime |
+| `JWT_REFRESH_SECRET` | Refresh token signing secret |
+| `JWT_REFRESH_EXPIRES_IN` | Refresh token lifetime |
+| `CORS_ORIGIN` | Comma-separated allowed origins or `*` |
+| `SWAGGER_ENABLED` | Enable or disable Swagger |
 
 ## Scripts
 
 ### Application
-
-| Script             | Purpose                                   |
-| ------------------ | ----------------------------------------- |
-| `pnpm start:dev`   | Run the API in watch mode                 |
-| `pnpm start:debug` | Run the API with the debugger attached    |
-| `pnpm start:prod`  | Run the compiled application from `dist/` |
-| `pnpm build`       | Compile the project                       |
-| `pnpm lint`        | Lint and auto-fix supported issues        |
-| `pnpm format`      | Format source and test files              |
+| Script | Purpose |
+|---|---|
+| `pnpm start:dev` | Run the API in watch mode |
+| `pnpm start:debug` | Run the API with the debugger attached |
+| `pnpm start:prod` | Run the compiled application from `dist/` |
+| `pnpm build` | Compile the project |
+| `pnpm lint` | Lint and auto-fix supported issues |
+| `pnpm format` | Format source and test files |
 
 ### Cleanup
-
-| Script               | Purpose                                                             |
-| -------------------- | ------------------------------------------------------------------- |
-| `pnpm clean`         | Remove `node_modules`, `pnpm-lock.yaml`, `dist`, and build metadata |
-| `pnpm rebuild`       | Clean install dependencies and rebuild the project                  |
-| `pnpm clean:rebuild` | Full cleanup and rebuild (clean + rebuild)                          |
+| Script | Purpose |
+|---|---|
+| `pnpm clean` | Remove `node_modules`, `pnpm-lock.yaml`, `dist`, and build metadata |
+| `pnpm rebuild` | Clean install dependencies and rebuild the project |
+| `pnpm clean:rebuild` | Full cleanup and rebuild (clean + rebuild) |
 
 ### Quality gates
-
-| Script            | Purpose                                   |
-| ----------------- | ----------------------------------------- |
-| `pnpm test`       | Run unit tests                            |
-| `pnpm test:watch` | Run unit tests in watch mode              |
-| `pnpm test:cov`   | Generate coverage report                  |
-| `pnpm test:debug` | Run tests with debugger attached          |
-| `pnpm test:e2e`   | Run end-to-end tests                      |
-| `pnpm validate`   | Run lint, tests, and build in one command |
+| Script | Purpose |
+|---|---|
+| `pnpm test` | Run unit tests |
+| `pnpm test:watch` | Run unit tests in watch mode |
+| `pnpm test:cov` | Generate coverage report |
+| `pnpm test:debug` | Run tests with debugger attached |
+| `pnpm test:e2e` | Run end-to-end tests |
+| `pnpm validate` | Run lint, tests, and build in one command |
 
 ## Git Hooks
 
@@ -106,17 +103,16 @@ This repository uses Husky to run checks automatically at the Git stage level:
 After cloning the repository, run `pnpm install` once. The `prepare` script in `package.json` installs the hooks automatically during dependency installation, so you do not need to set Husky up manually in each clone unless install scripts are skipped.
 
 ### Database
-
-| Script                           | Purpose                                                               |
-| -------------------------------- | --------------------------------------------------------------------- |
-| `pnpm migration:run`             | Apply pending migrations                                              |
-| `pnpm migration:revert`          | Revert the latest migration                                           |
-| `pnpm migration:show`            | Show migration status                                                 |
+| Script | Purpose |
+|---|---|
+| `pnpm migration:run` | Apply pending migrations |
+| `pnpm migration:revert` | Revert the latest migration |
+| `pnpm migration:show` | Show migration status |
 | `pnpm migration:generate <Name>` | Generate a migration in `src/database/migrations` from entity changes |
-| `pnpm migration:create`          | Create an empty migration                                             |
-| `pnpm schema:drop`               | Drop the current database schema (use with caution)                   |
-| `pnpm seed`                      | Run seeders                                                           |
-| `pnpm db:reset`                  | Drop, migrate, and seed the database                                  |
+| `pnpm migration:create` | Create an empty migration |
+| `pnpm schema:drop` | Drop the current database schema (use with caution) |
+| `pnpm seed` | Run seeders |
+| `pnpm db:reset` | Drop, migrate, and seed the database |
 
 Use the short wrapper when creating a migration:
 
@@ -132,29 +128,29 @@ All application routes are prefixed with `/api/v1` except the health check. API 
 
 ### Health
 
-| Endpoint  | Method | Auth   | Purpose        |
-| --------- | ------ | ------ | -------------- |
-| `/health` | GET    | Public | Liveness probe |
+| Endpoint | Method | Auth | Purpose |
+|---|---|---|---|
+| `/health` | GET | Public | Liveness probe |
 
 ### Authentication
 
-| Endpoint                | Method | Auth         | Purpose                                         |
-| ----------------------- | ------ | ------------ | ----------------------------------------------- |
-| `/api/v1/auth/register` | POST   | Public       | Create a new account                            |
-| `/api/v1/auth/login`    | POST   | Public       | Authenticate and issue tokens                   |
-| `/api/v1/auth/refresh`  | POST   | Public       | Exchange a refresh token for a new access token |
-| `/api/v1/auth/logout`   | POST   | Bearer token | Revoke the current refresh token                |
-| `/api/v1/auth/me`       | GET    | Bearer token | Return the current authenticated user           |
+| Endpoint | Method | Auth | Purpose |
+|---|---|---|---|
+| `/api/v1/auth/register` | POST | Public | Create a new account |
+| `/api/v1/auth/login` | POST | Public | Authenticate and issue tokens |
+| `/api/v1/auth/refresh` | POST | Public | Exchange a refresh token for a new access token |
+| `/api/v1/auth/logout` | POST | Bearer token | Revoke the current refresh token |
+| `/api/v1/auth/me` | GET | Bearer token | Return the current authenticated user |
 
 ### Users
 
-| Endpoint            | Method | Auth         | Purpose                    |
-| ------------------- | ------ | ------------ | -------------------------- |
-| `/api/v1/users`     | POST   | Bearer token | Create a user              |
-| `/api/v1/users`     | GET    | Bearer token | List users with pagination |
-| `/api/v1/users/:id` | GET    | Bearer token | Fetch a user by ID         |
-| `/api/v1/users/:id` | PATCH  | Bearer token | Update a user              |
-| `/api/v1/users/:id` | DELETE | Bearer token | Delete a user              |
+| Endpoint | Method | Auth | Purpose |
+|---|---|---|---|
+| `/api/v1/users` | POST | Bearer token | Create a user |
+| `/api/v1/users` | GET | Bearer token | List users with pagination |
+| `/api/v1/users/:id` | GET | Bearer token | Fetch a user by ID |
+| `/api/v1/users/:id` | PATCH | Bearer token | Update a user |
+| `/api/v1/users/:id` | DELETE | Bearer token | Delete a user |
 
 The global JWT guard protects the API by default. Use the `@Public()` decorator for endpoints that should remain open.
 
@@ -168,7 +164,7 @@ All responses follow a standardized envelope for consistency. Success and error 
 {
   "success": true,
   "message": "Resource retrieved successfully",
-  "data": {},
+  "data": { },
   "meta": {
     "timestamp": "2026-05-03T12:34:56.000Z",
     "version": "1.0.0",

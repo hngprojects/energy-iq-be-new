@@ -57,12 +57,17 @@ export class StandardResponse {
     this.appVersion = version?.trim() || undefined;
   }
 
-  static success<T>(data?: SuccessPayload<T>, options: SuccessOptions = {}): APIResponse<T | undefined> {
+  static success<T>(
+    data?: SuccessPayload<T>,
+    options: SuccessOptions = {},
+  ): APIResponse<T | undefined> {
     const extracted = this.extractPayload(data);
 
     return {
       success: true,
-      message: options.message ?? this.resolveSuccessMessage(options.method, options.statusCode),
+      message:
+        options.message ??
+        this.resolveSuccessMessage(options.method, options.statusCode),
       data: extracted.data,
       meta: this.buildMeta(options.request, {
         ...options.meta,
@@ -71,7 +76,10 @@ export class StandardResponse {
     };
   }
 
-  static error(message: string[] | string, options: ErrorOptions = {}): APIErrorResponse {
+  static error(
+    message: string[] | string,
+    options: ErrorOptions = {},
+  ): APIErrorResponse {
     return {
       success: false,
       message,
@@ -81,7 +89,11 @@ export class StandardResponse {
     };
   }
 
-  static sendSuccess<T>(res: Response, data?: SuccessPayload<T>, options: SuccessOptions = {}): void {
+  static sendSuccess<T>(
+    res: Response,
+    data?: SuccessPayload<T>,
+    options: SuccessOptions = {},
+  ): void {
     const statusCode = options.statusCode ?? 200;
 
     if (statusCode === 204) {
@@ -92,11 +104,18 @@ export class StandardResponse {
     res.status(statusCode).json(this.success(data, options));
   }
 
-  static sendError(res: Response, message: string[] | string, options: ErrorOptions = {}): void {
+  static sendError(
+    res: Response,
+    message: string[] | string,
+    options: ErrorOptions = {},
+  ): void {
     res.status(options.statusCode ?? 500).json(this.error(message, options));
   }
 
-  private static buildMeta(request?: Request, meta: Partial<ResponseMeta> = {}): ResponseMeta {
+  private static buildMeta(
+    request?: Request,
+    meta: Partial<ResponseMeta> = {},
+  ): ResponseMeta {
     return {
       timestamp: new Date().toISOString(),
       version: this.appVersion,
@@ -109,7 +128,12 @@ export class StandardResponse {
     data?: T;
     pagination?: PaginationMeta;
   } {
-    if (payload && typeof payload === 'object' && 'payload' in payload && 'paginationMeta' in payload) {
+    if (
+      payload &&
+      typeof payload === 'object' &&
+      'payload' in payload &&
+      'paginationMeta' in payload
+    ) {
       const paginatedPayload = payload;
 
       return {
@@ -121,7 +145,10 @@ export class StandardResponse {
     return { data: payload };
   }
 
-  private static resolveSuccessMessage(method?: string, statusCode?: number): string {
+  private static resolveSuccessMessage(
+    method?: string,
+    statusCode?: number,
+  ): string {
     if (statusCode === 201) {
       return SYS_MSG.CREATED;
     }
@@ -150,7 +177,8 @@ export class StandardResponse {
   }
 
   private static getRequestId(request?: Request): string | undefined {
-    const requestId = request?.headers['x-request-id'] ?? request?.headers['x-correlation-id'];
+    const requestId =
+      request?.headers['x-request-id'] ?? request?.headers['x-correlation-id'];
 
     if (Array.isArray(requestId)) {
       return requestId[0];
