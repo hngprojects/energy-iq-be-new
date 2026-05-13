@@ -97,7 +97,7 @@ export class InvertersService {
   }
 
   /**
-   * Shared persistence logic — checks for duplicate serial, encrypts credentials,
+   * Shared persistence logic: checks for duplicate serial, encrypts credentials,
    * and writes the inverter record.
    */
   private async persistInverter(

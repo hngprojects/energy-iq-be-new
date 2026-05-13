@@ -43,7 +43,6 @@ export class GrowattAdapter {
       );
     }
 
-    // Handle both flat { plant_id, ... } and wrapped { data: [{ plant_id, ... }] } shapes
     const plant: GrowattPlant | undefined = plantData.data?.length
       ? plantData.data[0]
       : plantData.plant_id

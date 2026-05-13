@@ -1,12 +1,3 @@
-/**
- * Growatt OpenAPI v1 response types.
- *
- * NOTE: The exact shape of /v1/plant/list and /v1/device/list is unconfirmed
- * against the live API. The TRD shows a flat object; community implementations
- * suggest a data[] array. The adapter handles both shapes defensively.
- * Adjust once verified against a real token.
- */
-
 // Fields present on a single plant record — used in both flat and array shapes
 export interface GrowattPlant {
   plant_id: string;
@@ -17,12 +8,6 @@ export interface GrowattPlant {
   peak_power: number; // kW — rated capacity
 }
 
-/**
- * GET /v1/plant/list
- * TRD shows flat: { error_code, plant_id, name, ... }
- * Community implementations suggest: { error_code, data: GrowattPlant[] }
- * Both shapes are handled in the adapter.
- */
 export interface GrowattPlantListResponse extends Partial<GrowattPlant> {
   error_code: number;
   error_msg?: string;
@@ -30,7 +15,6 @@ export interface GrowattPlantListResponse extends Partial<GrowattPlant> {
   data?: GrowattPlant[]; // present if API wraps in array
 }
 
-// Fields present on a single device record — used in both flat and array shapes
 export interface GrowattDevice {
   device_id: string;
   device_sn: string;
@@ -40,20 +24,12 @@ export interface GrowattDevice {
   manufacturer: string;
 }
 
-/**
- * GET /v1/device/list?plant_id={id}
- * Same ambiguity as plant/list — handled defensively in the adapter.
- */
 export interface GrowattDeviceListResponse extends Partial<GrowattDevice> {
   error_code: number;
   count?: number;
   data?: GrowattDevice[]; // present if API wraps in array
 }
 
-/**
- * POST /v4/new-api/queryLastData — MIN series real-time data.
- * Numeric fields confirmed as numbers from TRD response payload.
- */
 interface GrowattMinData {
   serialNum: string;
   time: string; // "YYYY-MM-DD HH:mm:ss"
