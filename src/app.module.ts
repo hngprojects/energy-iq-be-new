@@ -24,6 +24,7 @@ import { bullConfig } from './config/queue.config';
 import { RedisModule } from './common/redis/redis.module';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { WellKnownModule } from './modules/well-known/well-known.module';
+import { InvertersModule } from './modules/inverters/inverters.module';
 
 @Module({
   imports: [
@@ -60,6 +61,7 @@ import { WellKnownModule } from './modules/well-known/well-known.module';
     EmailModule,
     RedisModule,
     WellKnownModule,
+    InvertersModule,
   ],
   providers: [
     {

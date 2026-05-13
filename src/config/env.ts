@@ -70,6 +70,14 @@ export const env = createEnv({
       .transform((v) => Number(v)),
     GROQ_API_KEY: z.string().nonoptional(),
     CHATBOT_NAME: z.string().default('orochimaru'),
+
+    VICTRON_API_BASE_URL: z
+      .url()
+      .default('https://vrmapi.victronenergy.com/v2'),
+    GROWATT_API_BASE_URL: z.url().default(''),
+    SUNSYNK_API_BASE_URL: z.url().default('https://globalapi.solarmanpv.com'),
+    SOLARMAN_APP_ID: z.string().min(1),
+    SOLARMAN_APP_SECRET: z.string().min(1),
   },
   runtimeEnv: process.env,
   emptyStringAsUndefined: true,
