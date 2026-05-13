@@ -1,66 +1,63 @@
-# Pull Request
+## Pull Request Summary
 
-## Description
+<!-- Briefly describe what this PR does and why. -->
 
-<!-- Provide a brief summary of the changes made in this PR -->
+---
 
-## Related Issue
+## What’s Changed?
 
-<!-- Link to the related issue(s) this PR addresses -->
+<!-- List major changes or features introduced by this PR. -->
 
-Fixes #(issue)
+- [ ] Feature 1
+- [ ] Feature 2
+- [ ] Bugfix
+- [ ] Refactor
+- [ ] Documentation
+- [ ] Other (describe below):
 
-## Type of Change
+---
 
-<!-- Mark the appropriate option with an "x" -->
+## Detailed Description
 
-- [ ] feat: New feature
-- [ ] fix: Bug fix
-- [ ] docs: Documentation updates
-- [ ] style: Code style/formatting changes
-- [ ] refactor: Code refactoring
-- [ ] perf: Performance improvements
-- [ ] test: Test additions/updates
-- [ ] chore: Build process or tooling changes
-- [ ] ci: CI configuration changes
-- [ ] other: <!-- describe -->
+<!--
+  Provide a detailed description of your changes.
+  Include any important implementation details, design decisions, or breaking changes.
+-->
 
-## How Has This Been Tested?
+---
 
-<!-- Describe the tests you ran to verify your changes -->
+## How to Test
 
-- [ ] Unit tests
-- [ ] Integration tests
-- [ ] Manual tests
+<!--
+  Describe how reviewers can test your changes.
+  Include setup steps, test cases, or commands.
+-->
 
-## Test Evidence
+---
 
-<!-- Please upload a screenshot showing all tests passing -->
-<!-- This is required for all PRs that include code changes -->
+## Related Issues
 
-## Screenshots (if applicable)
+<!-- List any related issues or feature requests -->
 
-<!-- Add screenshots to help explain your changes if UI is affected -->
+- Closes #
 
-## Documentation Screenshots (if applicable)
-
-<!-- If you've made code changes, please add screenshots of the updated documentation -->
-<!-- This is required for all PRs that include code changes that affect user-facing features -->
+---
 
 ## Checklist
 
-<!-- Mark the appropriate option with an "x" -->
+- [ ] I have tested these changes locally.
+- [ ] The code follows project style guidelines.
+- [ ] I have updated documentation as needed.
+- [ ] No sensitive data (like secrets or passwords) is included in this PR.
 
-- [ ] My code follows the project's coding style
-- [ ] I have commented my code, particularly in hard-to-understand areas
-- [ ] I have made corresponding changes to the documentation
-- [ ] My changes generate no new warnings
-- [ ] I have added tests that prove my fix is effective or that my feature works
-- [ ] New and existing unit tests pass locally with my changes
-- [ ] Any dependent changes have been merged and published
-- [ ] I have included a screenshot showing all tests passing
-- [ ] I have included documentation screenshots (if applicable)
+---
 
-## Additional Notes
+## Screenshots
 
-<!-- Add any other information about the PR here -->
+<!-- Screenshot of feature/fix made. Can be of response -->
+
+---
+
+**Reviewer Notes:**
+
+<!-- Anything you want reviewers to pay special attention to? -->
