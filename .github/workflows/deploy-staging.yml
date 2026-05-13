@@ -5,6 +5,11 @@ on:
     branches:
       - staging
   workflow_dispatch:
+permissions:
+ contents: read
+concurrency:
+ group: frontend-deploy-staging
+ cancel-in-progress: true
 
 jobs:
   deploy:
@@ -24,7 +29,7 @@ jobs:
           script: |
             set -e
             sudo -u appuser bash -c '
-              cd /home/appuser/backend/staging/energy-iq-be
+              cd /home/appuser/backend/staging/
 
               git pull origin staging
 
