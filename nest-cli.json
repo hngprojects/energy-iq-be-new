@@ -3,14 +3,13 @@
   "collection": "@nestjs/schematics",
   "sourceRoot": "src",
   "compilerOptions": {
-    "deleteOutDir": true,
-    "plugins": [
+    "deleteOutDir": false,
+    "assets": [
       {
-        "name": "@nestjs/swagger",
-        "options": {
-          "dtoFileNameSuffix": [".dto.ts", ".entity.ts"]
-        }
+        "include": "modules/email/templates/**/*",
+        "outDir": "dist"
       }
-    ]
+    ],
+    "watchAssets": true
   }
 }

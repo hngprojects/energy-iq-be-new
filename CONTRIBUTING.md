@@ -140,14 +140,12 @@ The API uses URI-based versioning. All routes are prefixed with `/api/v1` (excep
 ```
 
 **When adding a new API version:**
-
 - Create a new controller with the version in metadata: `version: '2'`
 - Add versioning tests to verify the old and new versions coexist.
 - Update `README.md` to document the new endpoints.
 - Consider keeping the old version around for backward compatibility unless a deprecation period has passed.
 
 **Versioning is NOT required when:**
-
 - Making backward-compatible fixes or improvements within the same version.
 - Updating error messages or response metadata (as long as the response envelope structure doesn't change).
 - Adding new optional fields to request or response DTOs (must document them as optional).

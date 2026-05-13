@@ -6,9 +6,13 @@ dotenv.config();
 
 export const env = createEnv({
   server: {
-    NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
+    NODE_ENV: z
+      .enum(['development', 'staging', 'production'])
+      .default('development'),
     PORT: z.coerce.number().int().positive().default(3000),
     HOST: z.string().default('localhost'),
+    CLIENT_URL: z.url().default('http://localhost:3000'),
+    ALLOWED_REDIRECT_ORIGINS: z.string().default('http://localhost:3000,'), // add origins and separate with comma
 
     DATABASE_HOST: z.string().min(1),
     DATABASE_PORT: z.coerce.number().int().positive().default(5432),
@@ -18,26 +22,54 @@ export const env = createEnv({
     DATABASE_SYNC: z
       .union([z.boolean(), z.enum(['true', 'false'])])
       .default(false)
-      .transform(v => v === true || v === 'true'),
+      .transform((v) => v === true || v === 'true'),
     DATABASE_LOGGING: z
       .union([z.boolean(), z.enum(['true', 'false'])])
       .default(false)
-      .transform(v => v === true || v === 'true'),
+      .transform((v) => v === true || v === 'true'),
     DATABASE_SSL: z
       .union([z.boolean(), z.enum(['true', 'false'])])
       .default(false)
-      .transform(v => v === true || v === 'true'),
+      .transform((v) => v === true || v === 'true'),
 
-    JWT_ACCESS_SECRET: z.string().min(32, 'JWT_ACCESS_SECRET must be at least 32 chars'),
+    REDIS_HOST: z.string().default('localhost'),
+    REDIS_PORT: z.coerce.number().int().positive().default(6379),
+    REDIS_DEFAULT_TTL: z.coerce.number().int().positive().default(900),
+
+    RESEND_API_KEY: z.string().min(1),
+    RESEND_FROM: z.string().email().default('energyiq@hng14.com'),
+
+    JWT_ACCESS_SECRET: z
+      .string()
+      .min(32, 'JWT_ACCESS_SECRET must be at least 32 chars'),
     JWT_ACCESS_EXPIRES_IN: z.string().default('15m'),
-    JWT_REFRESH_SECRET: z.string().min(32, 'JWT_REFRESH_SECRET must be at least 32 chars'),
+    JWT_REFRESH_SECRET: z
+      .string()
+      .min(32, 'JWT_REFRESH_SECRET must be at least 32 chars'),
     JWT_REFRESH_EXPIRES_IN: z.string().default('7d'),
+
+    GOOGLE_CLIENT_ID: z.string().min(1),
+    GOOGLE_CLIENT_SECRET: z.string().min(1),
+    GOOGLE_CALLBACK_URL: z.url(),
 
     CORS_ORIGIN: z.string().default('*'),
     SWAGGER_ENABLED: z
       .union([z.boolean(), z.enum(['true', 'false'])])
       .default(true)
-      .transform(v => v === true || v === 'true'),
+      .transform((v) => v === true || v === 'true'),
+
+    CHAT_CONTEXT_LENGTH: z.coerce
+      .number()
+      .int()
+      .positive()
+      .transform((v) => Number(v)),
+    CHAT_EXP_TIMEOUT_SECONDS: z.coerce
+      .number()
+      .int()
+      .positive()
+      .transform((v) => Number(v)),
+    GROQ_API_KEY: z.string().nonoptional(),
+    CHATBOT_NAME: z.string().default('orochimaru'),
   },
   runtimeEnv: process.env,
   emptyStringAsUndefined: true,

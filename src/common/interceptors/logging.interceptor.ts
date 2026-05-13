@@ -1,4 +1,10 @@
-import { CallHandler, ExecutionContext, Injectable, Logger, NestInterceptor } from '@nestjs/common';
+import {
+  CallHandler,
+  ExecutionContext,
+  Injectable,
+  Logger,
+  NestInterceptor,
+} from '@nestjs/common';
 import { Request, Response } from 'express';
 import { Observable, tap, catchError, throwError } from 'rxjs';
 import { randomUUID } from 'crypto';
@@ -31,12 +37,13 @@ export class LoggingInterceptor implements NestInterceptor {
             duration: `${ms}ms`,
             ip,
             userAgent,
-          })
+          }),
         );
       }),
       catchError((error: unknown) => {
         const ms = Date.now() - start;
-        const errorMessage = error instanceof Error ? error.message : String(error);
+        const errorMessage =
+          error instanceof Error ? error.message : String(error);
 
         this.logger.error(
           JSON.stringify({
@@ -48,11 +55,11 @@ export class LoggingInterceptor implements NestInterceptor {
             ip,
             userAgent,
             error: errorMessage,
-          })
+          }),
         );
 
         return throwError(() => error);
-      })
+      }),
     );
   }
 }
